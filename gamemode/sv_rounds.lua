@@ -38,6 +38,18 @@ function GM:FinishRound( winteam )
 end
 
 local mapstart = true
+function GM:InitSetUpRound()
+	if player.GetCount() > 1 then
+		if mapstart then
+			mapstart = false
+			timer.Simple( self.Convars["StartWaitTime"], function() 
+				self:SetUpRound()
+				mapstart = true
+			end)
+		end
+	end
+end
+
 function GM:RoundThink()
 	if self.RoundState == 2 then
 		if self.RoundTime >= self.Convars["RoundLength"] then
@@ -53,14 +65,10 @@ function GM:RoundThink()
 			self.RoundTime = math.Round( CurTime() - self.RoundStart, 2 )
 			SetGlobalFloat( "RoundTime", self.RoundTime )
 		end
-	elseif player.GetCount() > 1 and self.RoundState == 1 and mapstart then
-		mapstart = false
-		timer.Simple( self.Convars["StartWaitTime"], function() 
-			self:SetUpRound()
-			mapstart = true
-		end)
+	elseif self.RoundState == 1 then
+		self:InitSetUpRound()
 	end
-	if player.GetCount() <= 1 and self.RoundState != 1 then
+	if self:GetPlayingCount() <= 1 and self.RoundState != 1 then
 		self.RoundState = 1
 		self.RoundTime = 0
 		SetGlobalFloat( "RoundTime", 0.0 )

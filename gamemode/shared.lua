@@ -35,3 +35,7 @@ function GM:GetPlaying()
 	end
 	return players
 end
+
+function GM:GetPlayingCount()
+	return #self:GetPlaying()
+end
