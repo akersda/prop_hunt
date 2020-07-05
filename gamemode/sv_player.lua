@@ -10,19 +10,34 @@ function GM:PlayerInitialSpawn( ply )
 	ply:SetTeam( TEAM_SPEC )
 end
 
+local function phSetTeam( ply, tn )
+	if tn == TEAM_HUNTER then
+		ply:SetTeam( tn )
+		ply:SetModel( "models/player/combine_soldier.mdl" )
+		ply:Spawn()
+	elseif tn == TEAM_PROP then
+		ply:SetTeam( tn )
+		ply:SetModel( "models/player/kleiner.mdl" )
+		ply:Spawn()
+	elseif tn == TEAM_SPEC then
+		ply:SetTeam( tn )
+		ply:KillSilent()
+	else
+		print("[PH] Error: Invalid team" )
+	end
+end
+
 hook.Add( "StartRound", "Round_setupplayer", function()
 	local huntnum = team.NumPlayers( TEAM_HUNTER )
 	local propnum = team.NumPlayers( TEAM_PROP )
 	-- add players
 	for k, ply in pairs( playerstoadd ) do
 		if huntnum > propnum then
-			ply:SetTeam( TEAM_PROP )
 			propnum = propnum + 1
-			ply:Spawn()
+			phSetTeam( ply, TEAM_PROP )
 		else
-			ply:SetTeam( TEAM_HUNTER )
 			huntnum = huntnum + 1
-			ply:Spawn()
+			phSetTeam( ply, TEAM_HUNTER )
 		end
 		print("[PH] Player join: " .. ply:Nick())
 	end
@@ -49,11 +64,9 @@ hook.Add( "StartRound", "Round_setupplayer", function()
 			ply:Spawn()
 		else
 			if ply:Team() == TEAM_PROP then
-				ply:SetTeam( TEAM_HUNTER )
-				ply:Spawn()
+				phSetTeam( ply, TEAM_HUNTER )
 			else
-				ply:SetTeam( TEAM_PROP )
-				ply:Spawn()
+				phSetTeam( ply, TEAM_PROP )
 			end
 		end
 	end
