@@ -17,7 +17,7 @@ function playermeta:SetGameStatus( sta )
 end
 
 function playermeta:GetGameStatus( sta )
-	return self.ingame
+	return self.ingame or 0
 end
 
 
