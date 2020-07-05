@@ -39,8 +39,8 @@ end
 
 local mapstart = true
 function GM:InitSetUpRound()
-	if player.GetCount() > 1 then
-		if mapstart then
+	if mapstart then
+		if player.GetCount() > 1 then
 			mapstart = false
 			timer.Simple( self.Convars["StartWaitTime"], function() 
 				self:SetUpRound()
