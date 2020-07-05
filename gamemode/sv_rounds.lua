@@ -26,14 +26,15 @@ function GM:SetUpRound()
 	end
 end
 
-function GM:FinishRound()
+function GM:FinishRound( winteam )
+	if winteam == nil then winteam = 1 end
 	self.RoundState = 3
 	self.RoundTime = 0
 	self.RoundStart = CurTime()
 	SetGlobalFloat( "RoundTime", 0.0 )
 	SetGlobalInt( "RoundState", 3 )
-	hook.Run( "EndRound", self.RoundNum )
-	print("[PH] Finishing round " .. self.RoundNum .. ".")
+	hook.Run( "EndRound", self.RoundNum, winteam )
+	print("[PH] Finishing round " .. self.RoundNum .. ". " .. team.GetName( winteam ) .. " win.")
 end
 
 local mapstart = true
@@ -52,13 +53,14 @@ function GM:RoundThink()
 			self.RoundTime = math.Round( CurTime() - self.RoundStart, 2 )
 			SetGlobalFloat( "RoundTime", self.RoundTime )
 		end
-	elseif player.GetCount() > 0 and self.RoundState == 1 and mapstart then
+	elseif player.GetCount() > 1 and self.RoundState == 1 and mapstart then
 		mapstart = false
 		timer.Simple( self.Convars["StartWaitTime"], function() 
 			self:SetUpRound()
 			mapstart = true
 		end)
-	elseif player.GetCount() == 0 and self.RoundState != 1 then
+	end
+	if player.GetCount() <= 1 and self.RoundState != 1 then
 		self.RoundState = 1
 		self.RoundTime = 0
 		SetGlobalFloat( "RoundTime", 0.0 )
