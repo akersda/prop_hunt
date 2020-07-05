@@ -16,6 +16,10 @@ function playermeta:SetGameStatus( sta )
 	self:SetNWInt( "ig_status", sta )
 end
 
+function playermeta:GetGameStatus( sta )
+	return self.ingame
+end
+
 
 hook.Add( "StartRound", "Round_setupplayer", function()
 	for k, ply in pairs( player.GetAll() ) do
