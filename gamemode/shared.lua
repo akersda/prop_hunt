@@ -4,6 +4,8 @@ GM.Email 	= "N/A"
 GM.Website 	= "https://github.com/akersda"
 GM.Version 	= "1.0.0"
 
+PROPHUNT = {}
+
 team.SetUp(1, "Spectators", Color(120, 120, 120))
 TEAM_SPEC = 1
 TEAM_SPECTATOR = 1
@@ -19,29 +21,29 @@ TEAM_CT = 3
 TEAM_PROP = 3
 TEAM_PROPS = 3
 
-GM.Teams = {
+PROPHUNT.Teams = {
 	[1] = false,
 	[2] = true,
 	[3] = true
 }
 
-GM.States = {
+PROPHUNT.States = {
 	[1] = "Start waiting",
 	[2] = "Playing round",
 	[3] = "Round over",
 	[4] = "Map vote"
 }
 
-function GM:GetPlaying()
+function PROPHUNT:GetPlaying()
 	local players = {}
 	for k,pl in pairs( player.GetAll() ) do
-		if self.Teams[pl:Team()] == true then
+		if PROPHUNT.Teams[pl:Team()] == true then
 			table.insert(players, pl)
 		end
 	end
 	return players
 end
 
-function GM:GetPlayingCount()
+function PROPHUNT:GetPlayingCount()
 	return #self:GetPlaying()
 end

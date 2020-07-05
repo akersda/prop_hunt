@@ -34,7 +34,11 @@ function GM:FinishRound( winteam )
 	SetGlobalFloat( "RoundTime", 0.0 )
 	SetGlobalInt( "RoundState", 3 )
 	hook.Run( "EndRound", self.RoundNum, winteam )
-	print("[PH] Finishing round " .. self.RoundNum .. ". " .. team.GetName( winteam ) .. " win.")
+	if winteam == 1 then
+		print("[PH] Finishing round " .. self.RoundNum .. ". Draw.")
+	else
+		print("[PH] Finishing round " .. self.RoundNum .. ". " .. team.GetName( winteam ) .. " win.")
+	end
 end
 
 local mapstart = true
@@ -53,7 +57,7 @@ end
 function GM:RoundThink()
 	if self.RoundState == 2 then
 		if self.RoundTime >= self.Convars["RoundLength"] then
-			self:FinishRound()
+			self:FinishRound( TEAM_PROP )
 		else
 			self.RoundTime = math.Round( CurTime() - self.RoundStart, 2 )
 			SetGlobalFloat( "RoundTime", self.RoundTime )
@@ -68,7 +72,8 @@ function GM:RoundThink()
 	elseif self.RoundState == 1 then
 		self:InitSetUpRound()
 	end
-	if self:GetPlayingCount() <= 1 and self.RoundState != 1 then
+	if PROPHUNT:GetPlayingCount() <= 1 and self.RoundState != 1 then
+		print("Too few players.")
 		self.RoundState = 1
 		self.RoundTime = 0
 		SetGlobalFloat( "RoundTime", 0.0 )

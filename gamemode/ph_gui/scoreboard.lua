@@ -1,7 +1,7 @@
 local scoreb = {}
 
 function GM:ScoreboardShow()
-	local gmtab = self
+	local gmtab = PROPHUNT
 	scoreb = vgui.Create( "Panel" )
 	scoreb:SetSize(400,200)
 	scoreb:Center()
@@ -12,6 +12,15 @@ function GM:ScoreboardShow()
 			pos = {4,4},
 			font = "DermaLarge"
 		})
+		local ypos = 20
+		for k, ply in pairs( player.GetAll() ) do
+			ypos = ypos + 10
+			draw.Text({
+				text = ply:Nick() .. " | " .. ply:Team(),
+				pos = {4,ypos},
+				font = "DermaDefault"
+			})
+		end
 	end
 end
 
