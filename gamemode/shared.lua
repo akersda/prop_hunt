@@ -20,6 +20,7 @@ TEAM_PROP = 3
 TEAM_PROPS = 3
 
 GM.Teams = {
+	[1] = false,
 	[2] = true,
 	[3] = true
 }

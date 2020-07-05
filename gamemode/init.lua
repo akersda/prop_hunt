@@ -5,6 +5,7 @@ local round_think_freq = 4
 
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("cl_player.lua")
 
 for k, file in pairs(file.Find( "prop_hunt/gamemode/ph_gui/*.lua", "LUA" )) do
 	AddCSLuaFile("ph_gui/"..file)
@@ -49,3 +50,4 @@ function GM:Think()
 end
 
 include("sv_rounds.lua")
+include("sv_player.lua")
