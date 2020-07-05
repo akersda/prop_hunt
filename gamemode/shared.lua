@@ -19,7 +19,10 @@ TEAM_CT = 3
 TEAM_PROP = 3
 TEAM_PROPS = 3
 
-GM.Teams = {2,3}
+GM.Teams = {
+	[2] = true,
+	[3] = true
+}
 
 GM.States = {
 	[1] = "Start waiting",
@@ -30,8 +33,10 @@ GM.States = {
 
 function GM:GetPlaying()
 	local players = {}
-	for k,t in pairs( self.Teams ) do
-		table.Add( players, team.GetPlayers( t ) )
+	for k,pl in pairs( player.GetAll() ) do
+		if self.Teams[pl:Team()] == true then
+			table.insert(players, pl)
+		end
 	end
 	return players
 end
