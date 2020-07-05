@@ -21,6 +21,13 @@ function playermeta:GetGameStatus( sta )
 end
 
 
+function GM:ShouldCollide( ent1, ent2 )
+	if ( IsValid( ent1 ) and IsValid( ent2 ) and ent1:IsPlayer() and ent2:IsPlayer() ) then
+		return false
+	end
+end
+
+
 hook.Add( "StartRound", "Round_setupplayer", function()
 	for k, ply in pairs( player.GetAll() ) do
 		if ply:Team() == 2 then
