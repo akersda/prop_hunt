@@ -14,6 +14,12 @@ local function phSetTeam( ply, tn )
 	if tn == TEAM_HUNTER then
 		ply:SetTeam( tn )
 		ply:SetModel( "models/player/combine_soldier.mdl" )
+		ply:Give("weapon_crowbar")
+		ply:Give("weapon_smg1")
+		ply:Give("weapon_shotgun")
+		ply:GiveAmmo(45 * 10, "SMG1")
+		ply:GiveAmmo(6 * 10, "buckshot")
+		ply:GiveAmmo(1, "SMG1_Grenade")
 		ply:Spawn()
 	elseif tn == TEAM_PROP then
 		ply:SetTeam( tn )
@@ -28,6 +34,11 @@ local function phSetTeam( ply, tn )
 end
 
 hook.Add( "StartRound", "Round_setupplayer", function()
+	-- strip weapons
+	for k, ply in pairs(player.GetAll()) do
+		ply:StripWeapons()
+		ply:StripAmmo()
+	end
 	local huntnum = team.NumPlayers( TEAM_HUNTER )
 	local propnum = team.NumPlayers( TEAM_PROP )
 	-- add players
@@ -35,9 +46,11 @@ hook.Add( "StartRound", "Round_setupplayer", function()
 		if huntnum > propnum then
 			propnum = propnum + 1
 			phSetTeam( ply, TEAM_PROP )
+			ply.keep = true
 		else
 			huntnum = huntnum + 1
 			phSetTeam( ply, TEAM_HUNTER )
+			ply.keep = true
 		end
 		print("[PH] Player join: " .. ply:Nick())
 	end
@@ -59,7 +72,6 @@ hook.Add( "StartRound", "Round_setupplayer", function()
 	-- switch teams
 	for k, ply in pairs( PROPHUNT:GetPlaying() ) do
 		if ply.keep == true then
-			print("[PH] Team balance: Keeping " .. ply:Nick())
 			ply.keep = false
 			ply:Spawn()
 		else
