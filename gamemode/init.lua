@@ -6,12 +6,14 @@ local round_think_freq = 4
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("cl_player.lua")
+AddCSLuaFile("meta_player.lua")
 
 for k, file in pairs(file.Find( "prop_hunt/gamemode/ph_gui/*.lua", "LUA" )) do
 	AddCSLuaFile("ph_gui/"..file)
 end
 
 include("shared.lua")
+include("meta_player.lua")
 
 GM.RoundLimit = CreateConVar("gm_roundlimit", 10, FCVAR_NOTIFY, "Number of rounds." )
 GM.StartWaitTime = CreateConVar("gm_mapstartwait", 5, FCVAR_NOTIFY, "Time to start round after mapchange." )
