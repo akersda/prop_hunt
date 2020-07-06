@@ -58,6 +58,12 @@ function GM:RoundThink()
 	if self.RoundState == 2 then
 		if self.RoundTime >= self.Convars["RoundLength"] then
 			self:FinishRound( TEAM_PROP )
+		elseif team.GetCount( TEAM_PROP ) == 0 and team.GetCount( TEAM_HUNTER ) == 0 then
+			self:FinishRound( 1 )
+		elseif team.GetCount( TEAM_PROP ) == 0 then
+			self:FinishRound( TEAM_HUNTER )
+		elseif team.GetCount( TEAM_HUNTER ) == 0 then
+			self:FinishRound( TEAM_PROP )
 		else
 			self.RoundTime = math.Round( CurTime() - self.RoundStart, 2 )
 			SetGlobalFloat( "RoundTime", self.RoundTime )
