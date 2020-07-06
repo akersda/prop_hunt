@@ -1,9 +1,21 @@
 local ply = FindMetaTable("Player")
 
 function ply:IsSpec()
-	return (ply:Team() == TEAM_SPEC)
+	return (self:Team() == TEAM_SPEC)
 end
 
 function ply:IsSpectating()
-	return (ply:Team() == TEAM_SPEC)
+	return (self:Team() == TEAM_SPEC)
+end
+
+if SERVER then
+
+	function ply:SetStaySpec( set )
+		ply.stayspec = set
+	end
+	
+	function ply:GetStaySpec()
+		return ply.stayspec or false
+	end
+
 end
